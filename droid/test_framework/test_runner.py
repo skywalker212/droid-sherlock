@@ -1,21 +1,24 @@
 import importlib
+
 from .device_controller import DeviceController
 from .network_manager import NetworkManager
 from .app_analyzer import AppAnalyzer
+from droid.types import Config
+from droid.plugins import BasePlugin
 
 class TestRunner:
-    def __init__(self, config):
+    def __init__(self, config: Config) -> None:
         self.config = config
         self.device = self._initialize_device_controller()
         self.network = NetworkManager(self.device)
         self.plugins = self._load_plugins()
         self.analyzer = AppAnalyzer(self.device, self.plugins)
 
-    def _initialize_device_controller(self):
+    def _initialize_device_controller(self) -> DeviceController:
         device_id = self.config['device_id']
         return DeviceController(device_id)
 
-    def _load_plugins(self):
+    def _load_plugins(self) -> BasePlugin:
         plugins = []
         for plugin_name in self.config.get('plugins', []):
             try:
@@ -31,7 +34,7 @@ class TestRunner:
                 print(f"Failed to load plugin {plugin_name}: {str(e)}")
         return plugins
 
-    def run(self):
+    def run(self) -> None:
         print(f"Starting test run on device: {self.device.get_device_info()}")
 
         # Test offline launch
@@ -48,13 +51,13 @@ class TestRunner:
         # Generate report
         self._generate_report(offline_results, online_results)
 
-    def _generate_report(self, offline_results, online_results):
+    def _generate_report(self, offline_results: dict, online_results: dict) -> None:
         print("\n=== Test Results ===")
         print("\nOffline behavior:")
         self._print_results(offline_results)
         print("\nOnline behavior:")
         self._print_results(online_results)
 
-    def _print_results(self, results):
+    def _print_results(self, results: dict) -> None:
         for key, value in results.items():
             print(f"{key}: {value}")

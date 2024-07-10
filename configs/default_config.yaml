@@ -1,0 +1,4 @@
+device_id: "emulator-5554"
+app_package: "com.example.app/com.example.app.MainActivity"
+plugins:
+  - example_plugin

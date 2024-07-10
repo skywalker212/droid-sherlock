@@ -20,8 +20,8 @@ class DeviceController:
             logging.error(err)
             raise e
 
-    def launch_app(self, package_name: str) -> bool:
-        return self.execute_command(f"shell am start -n {package_name}")
+    def launch_app(self, package_name: str, activity_name: str) -> bool:
+        return self.execute_command(f"shell am start -n {package_name}/{activity_name}")
 
     def force_stop_app(self, package_name: str) -> bool:
         return self.execute_command(f"shell am force-stop {package_name}")

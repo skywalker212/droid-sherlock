@@ -53,6 +53,7 @@ class TestRunner:
         return classes
 
     def run(self) -> None:
+        print("Starting test run {}....".format(self.config.run_id))
         self.logger.info(f"Starting test run on device: {self.device.get_device_info()}")
         
         results = {}
@@ -65,6 +66,7 @@ class TestRunner:
             self._save_artifacts(test_name, test_result)
 
         self._generate_report(results)
+        print("Run finished, results saved in {}".format(self.config.run_dir))
 
     def _save_artifacts(self, test_name: str, test_result: dict) -> None:
         artifacts = []

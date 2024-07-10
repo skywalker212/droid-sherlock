@@ -115,6 +115,7 @@ lint/tmp/
 # Config files (except example/default)
 configs/*
 !configs/default_config.yaml
+!configs/example_config.yaml
 
 # Test results
 test_results/

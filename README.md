@@ -146,10 +146,11 @@ Copy `configs/default_config.yaml` to `configs/your_app_config.yaml`. Once you h
 
 ```yaml
 device_id: "your_device_id_here"
-app_package: "com.example.app/com.example.app.MainActivity"
+app_package: "com.example.app/"
+app_activity: "com.example.app.MainActivity"
 ```
 
-Replace `your_device_id_here` with the actual device ID, and update the `app_package` with your app's package name and main activity.
+Replace `your_device_id_here` with the actual device ID, and update the `app_package` with your app's package name and `app_activity` with main activity.
 
 ## Running Tests
 

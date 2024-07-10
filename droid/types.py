@@ -9,6 +9,7 @@ import os
 class Configuration:
     device_id: str
     app_package: str
+    app_activity: str
     plugins: List[str] = field(default_factory=list)
     test_cases: List[str] = field(default_factory=list)
     run_id: str = field(init=False)
@@ -18,5 +19,5 @@ class Configuration:
     def __post_init__(self):
         self.start_time = datetime.datetime.now()
         self.run_id = self.start_time.strftime("%Y%m%d_%H%M%S")
-        self.run_dir = os.path.join("test_runs", self.run_id)
+        self.run_dir = os.path.join("test_results", self.run_id)
         os.makedirs(self.run_dir, exist_ok=True)

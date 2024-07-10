@@ -1,5 +1,6 @@
 device_id: "your_device_id"
-app_package: "com.example.app/com.example.app.MainActivity"
+app_package: "com.example.app"
+app_activity: "com.example.app.MainActivity"
 plugins:
   - example_plugin
 test_cases:

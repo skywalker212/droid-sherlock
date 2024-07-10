@@ -18,6 +18,44 @@ Android app behavior detective.
 - Android SDK and ADB
 - Android Emulator or physical Android device
 
+## Project Structure
+
+```
+droid-sherlock/
+│
+├── main.py                 # Entry point for the test framework
+│
+├── test_framework/         # Core framework components
+│   ├── __init__.py
+│   ├── device_controller.py
+│   ├── network_manager.py
+│   ├── app_analyzer.py
+│   └── test_runner.py
+│
+├── plugins/                # Custom app-specific plugins
+│   ├── __init__.py
+│   ├── base_plugin.py
+│   └── example_plugin.py
+│
+├── configs/                # Configuration files
+│   ├── default_config.yaml
+│   └── example_config.yaml
+│
+├── requirements.txt        # Python dependencies
+│
+├── .gitignore              # Git ignore file
+│
+└── README.md               # Project documentation
+```
+
+- `main.py`: The entry point for running tests.
+- `test_framework/`: Contains the core components of the testing framework.
+- `plugins/`: Directory for custom, app-specific plugins.
+- `configs/`: Stores configuration files for different apps or test scenarios.
+- `requirements.txt`: Lists all Python dependencies for the project.
+- `.gitignore`: Specifies files and directories that Git should ignore.
+- `README.md`: Provides project documentation and usage instructions.
+
 ## Installation
 
 1. Clone the repository:

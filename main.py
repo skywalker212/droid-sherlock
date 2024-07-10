@@ -1,11 +1,12 @@
 import argparse
 import yaml
 from droid.test_framework.test_runner import TestRunner
-from droid.types import Config
+from droid.types import Configuration
 
-def load_config(config_file: str) -> Config:
-    with open(config_file, 'r') as file:
-        return yaml.safe_load(file)
+def load_config(config_file: str) -> Configuration:
+    with open(config_file, 'r') as f:
+        config_dict = yaml.safe_load(f)
+    return Configuration(**config_dict)
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Android App Network Behavior Test")

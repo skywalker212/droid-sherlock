@@ -3,6 +3,9 @@ import logging
 
 from droid.test_framework import DeviceController, AppAnalyzer
 
+class TestError(Exception):
+    pass
+
 class BaseTest(ABC):
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)

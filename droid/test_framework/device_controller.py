@@ -57,8 +57,8 @@ class DeviceController:
 
     def is_screen_on(self) -> bool:
         try:
-            result = self.execute_command("shell dumpsys power | grep 'Display Power: state='")
-            return "ON" in result
+            result = self.execute_command("shell dumpsys power | grep 'mWakefulness='")
+            return "Awake" in result
         except DeviceControllerError as e:
             raise DeviceControllerError(f"Failed to check screen state: {str(e)}")
 

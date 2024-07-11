@@ -12,27 +12,28 @@ class NetworkTest(BaseTest):
 
             self.logger.info("Testing offline behavior...")
             device.wait_for_device()
+            device.unlock_screen()
             device.disable_network()
-            time.sleep(2)  # Wait for network to fully disable
+            time.sleep(2)  
             
             self.logger.info("Launching app in offline mode...")
             device.launch_app(app_package, app_activity)
-            time.sleep(5)  # Wait for app to stabilize
+            time.sleep(5)  
             
             results['offline'] = analyzer.analyze_behavior()
             
             self.logger.info("Closing app...")
             device.force_stop_app(app_package)
-            time.sleep(2)  # Wait for app to fully close
+            time.sleep(2)  
 
             self.logger.info("Enabling network...")
             device.wait_for_device()
             device.enable_network()
-            time.sleep(5)  # Wait for network to fully enable and stabilize
+            time.sleep(5)  
             
             self.logger.info("Launching app in online mode...")
             device.launch_app(app_package, app_activity)
-            time.sleep(5)  # Wait for app to stabilize
+            time.sleep(5)  
             
             results['online'] = analyzer.analyze_behavior()
 

@@ -2,6 +2,7 @@ import importlib
 import os
 import logging
 import sys
+from functools import reduce
 from typing import List, Type
 from .device_controller import DeviceController, DeviceControllerError
 from .app_analyzer import AppAnalyzer, AppAnalyzerError
@@ -29,7 +30,7 @@ class TestRunner:
     def _setup_logging(self, verbose: bool) -> None:
         log_file = os.path.join(self.config.run_dir, "test_run.log")
         file_handler = logging.FileHandler(filename=log_file)
-        handlers = [file_handler]
+        handlers: List[logging.Handler] = [file_handler]
         if verbose:
             stdout_handler = logging.StreamHandler(stream=sys.stdout)
             handlers.append(stdout_handler)
@@ -83,7 +84,12 @@ class TestRunner:
                     self.device.wait_for_device()
                     test_result = test_case.run(self.device, self.analyzer)
                     results[test_name] = test_result
-                    self._save_artifacts(test_name, test_result)
+                    saved_artifacts = self._save_artifacts(test_name, test_result)
+                    if saved_artifacts > 0:
+                        self.logger.info(f"Saved {saved_artifacts} artifacts for test case: {test_name}")
+                    else:
+                        self.logger.info(f"No artifacts to save for test case: {test_name}")
+
                 except (DeviceControllerError, AppAnalyzerError) as e:
                     self.logger.error(f"Error in test case {test_name}: {str(e)}")
                     results[test_name] = {"error": str(e)}
@@ -99,34 +105,25 @@ class TestRunner:
         finally:
             self.cleanup()
 
-    def _save_artifacts(self, test_name: str, test_result: dict) -> None:
-        artifacts_to_save = []
-        
-        def collect_artifacts(result: dict):
-            for key, value in result.items():
-                if isinstance(value, str) and os.path.isfile(value):
-                    artifacts_to_save.append((key, value))
-                elif isinstance(value, dict):
-                    collect_artifacts(value)
-
-        collect_artifacts(test_result)
-
-        if artifacts_to_save:
+    def _save_artifacts(self, test_name: str, test_result: dict) -> int:
+        artifacts = []
+        objs = []
+        for key, val in test_result.items():
+            if isinstance(val, str) and os.path.isfile(val):
+                artifacts.append((key, val))
+            elif isinstance(val, dict):
+                objs.append(val)
+        if len(artifacts) > 0:
             artifact_dir = os.path.join(self.config.run_dir, test_name)
             os.makedirs(artifact_dir, exist_ok=True)
-            
-            for key, value in artifacts_to_save:
-                new_path = os.path.join(artifact_dir, os.path.basename(value))
+            for key, value in artifacts:
+                base_name = os.path.basename(value)
+                new_path = os.path.join(artifact_dir, base_name)
                 os.rename(value, new_path)
-                *path, last_key = key.split('.')
-                current = test_result
-                for k in path:
-                    current = current[k]
-                current[last_key] = new_path
+                test_result[key] = new_path
+                self.logger.info(f"Saved {base_name} artifact for test case: {test_name}")
+        return reduce(lambda val, curr: val + self._save_artifacts(test_name, curr), objs, len(artifacts))
 
-            self.logger.info(f"Saved {len(artifacts_to_save)} artifacts for test case: {test_name}")
-        else:
-            self.logger.info(f"No artifacts to save for test case: {test_name}")
 
     def _generate_report(self, results: dict) -> None:
         report_path = os.path.join(self.config.run_dir, "test_report.txt")

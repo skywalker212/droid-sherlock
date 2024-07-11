@@ -4,7 +4,6 @@ from droid.test_framework import DeviceController
 class ExamplePlugin(BasePlugin):
     def run(self, _: DeviceController) -> dict:
         try:
-            # Perform plugin checks
             self.logger.info("Example plugin check passed")
             return {"example_check": "passed"}
         except Exception as e:

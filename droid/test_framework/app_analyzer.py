@@ -19,7 +19,6 @@ class AppAnalyzer:
         try:
             self.logger.info("Starting app behavior analysis")
             self.device.wait_for_device()
-            self._wait_for_app_stabilization()
             
             screenshot_file = self._capture_screenshot()
             
@@ -36,10 +35,6 @@ class AppAnalyzer:
         except Exception as e:
             self.logger.error(f"App behavior analysis failed: {str(e)}")
             raise AppAnalyzerError(f"App behavior analysis failed: {str(e)}")
-
-    def _wait_for_app_stabilization(self, wait_time: int = 5) -> None:
-        self.logger.info(f"Waiting {wait_time} seconds for app to stabilize")
-        time.sleep(wait_time)
 
     def _capture_screenshot(self) -> str:
         try:

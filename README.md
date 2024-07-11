@@ -60,7 +60,7 @@ droid-sherlock/
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/droid-sherlock.git
+   git clone https://github.com/skywalker212/droid-sherlock.git
    cd droid-sherlock
    ```
 

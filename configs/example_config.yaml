@@ -2,7 +2,7 @@ device_id: "emulator-5554"
 app_package: "com.google.android.youtube"
 app_activity: "com.google.android.apps.youtube.app.watchwhile.WatchWhileActivity"
 plugins:
-  - example_plugin
+  - screenshot_plugin
 test_cases:
   - network_test
 metadata:

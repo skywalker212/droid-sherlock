@@ -20,12 +20,7 @@ class AppAnalyzer:
             self.logger.info("Starting app behavior analysis")
             self.device.wait_for_device()
             
-            screenshot_file = self._capture_screenshot()
-            
-            results = {
-                "screenshot": screenshot_file
-            }
-
+            results = {}
             plugin_results = self._run_plugins()
             results.update(plugin_results)
 
@@ -35,17 +30,6 @@ class AppAnalyzer:
         except Exception as e:
             self.logger.error(f"App behavior analysis failed: {str(e)}")
             raise AppAnalyzerError(f"App behavior analysis failed: {str(e)}")
-
-    def _capture_screenshot(self) -> str:
-        try:
-            screenshot_file = f"screenshot_{int(time.time())}.png"
-            self.device.capture_screenshot(screenshot_file)
-            full_path = os.path.join(self.device.config.run_dir, screenshot_file)
-            self.logger.info(f"Screenshot captured: {full_path}")
-            return full_path
-        except Exception as e:
-            self.logger.error(f"Failed to capture screenshot: {str(e)}")
-            raise AppAnalyzerError(f"Failed to capture screenshot: {str(e)}")
 
     def _run_plugins(self) -> dict:
         plugin_results = {}
